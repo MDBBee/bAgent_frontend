@@ -13,6 +13,8 @@
     "@clerk/clerk-react": "^5.31.9",
     "@clerk/react-router": "^1.5.0",
     "@tailwindcss/vite": "^4.1.8",
+    "@tanstack/react-query": "^5.80.6",
+    "@tanstack/react-query-devtools": "^5.80.6",
     "daisyui": "^5.0.43",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

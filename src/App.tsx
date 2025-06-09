@@ -7,6 +7,10 @@ import ChallengesHistory from './pages/ChallengesHistory';
 import SingleChallenge from './components/SingleChallenge';
 import ClerkProviderContext from './auth/ClerkProvider';
 import Login from './auth/Login';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -41,7 +45,10 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ClerkProviderContext>
-      <RouterProvider router={router} />;
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <RouterProvider router={router} />;
+      </QueryClientProvider>
     </ClerkProviderContext>
   );
 }

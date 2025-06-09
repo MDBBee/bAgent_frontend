@@ -1,7 +1,7 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 import Navbar from '../components/HomeLayout/Navbar';
-import { SignedIn, SignedOut } from '@clerk/clerk-react';
+import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
 
 const HomeLayout = () => {
   return (
@@ -9,7 +9,7 @@ const HomeLayout = () => {
       <Navbar />
       <section className="flex justify-center items-center py-20">
         <SignedOut>
-          <Navigate to="/login" replace />
+          <RedirectToSignIn />
         </SignedOut>
         <SignedIn>
           <Outlet />
