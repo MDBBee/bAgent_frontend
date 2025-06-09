@@ -5,6 +5,8 @@ import GenerateChallenges from './pages/GenerateChallenges';
 import ErrorElement from './components/ErrorElement';
 import ChallengesHistory from './pages/ChallengesHistory';
 import SingleChallenge from './components/SingleChallenge';
+import ClerkProviderContext from './auth/ClerkProvider';
+import Login from './auth/Login';
 
 const router = createBrowserRouter([
   {
@@ -30,14 +32,18 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/login",
-    element: 
+    path: '/login',
+    element: <Login />,
+    errorElement: <Error />,
   },
-  {}
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ClerkProviderContext>
+      <RouterProvider router={router} />;
+    </ClerkProviderContext>
+  );
 }
 
 export default App;
