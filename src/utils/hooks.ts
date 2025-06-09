@@ -1,12 +1,6 @@
 import { useAuth } from '@clerk/clerk-react';
-import { useQuery } from '@tanstack/react-query';
 
-export const queryKeys = {
-  challenges: ['challenges'] as const,
-};
-
-const URL = 'http://localhost:8000/api/generate-challenge';
-interface challengeResponse {
+export type ChallengeResponse = {
   title: string;
   options: string[];
   difficulty: string;
@@ -14,34 +8,46 @@ interface challengeResponse {
   explanation: string;
   timestamp: Date;
   id: string;
-}
+};
 
-export function useGenerateChallenge(difficulty: 'easy' | 'medium' | 'hard') {
-  // Use `useAuth()` to access the `getToken()` method
+export function useSendRequestToBackend() {
   const { getToken } = useAuth();
 
-  return useQuery({
-    queryKey: queryKeys.challenges,
-    queryFn: async (): Promise<challengeResponse> => {
-      const token = await getToken();
+  async function queryBackend(apiPoint: string, options = {}) {
+    const token = await getToken();
 
-      const response = await fetch(URL, {
-        method: 'POST',
-        body: JSON.stringify({ difficulty }),
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+    const defaultOptions = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const request = await fetch(`http://localhost:8000/api/${apiPoint}`, {
+        ...options,
+        ...defaultOptions,
       });
 
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      if (!request.ok) {
+        const errorMessage = await request.json().catch(() => null);
+        if (request.status === 429) {
+          throw new Error(
+            'Daily quota exhausted!!, Will be reset in the next 24hours'
+          );
+        }
+        throw new Error(
+          errorMessage?.detail ||
+            'Somethging went wrong, error from queryBackend!'
+        );
       }
 
-      const data = await response.json();
-      return data as challengeResponse;
-    },
-    retry: 2,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
+      const result = await request.json();
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return { queryBackend };
 }

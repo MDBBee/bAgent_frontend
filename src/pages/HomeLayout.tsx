@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-import Navbar from '../components/HomeLayout/Navbar';
+import Navbar from '../components/homeLayout/Navbar';
 import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
 
 const HomeLayout = () => {
