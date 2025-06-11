@@ -1,10 +1,13 @@
-import { useState } from 'react';
-import type { TypeQuestion } from '../../pages/GenerateChallenges';
+// import type { ChallengeResponse } from '../../utils/hooks';
+import { useQuestionStore } from '../../store';
 
-const Question = ({ data }: { data: TypeQuestion }) => {
-  const [choice, setChoice] = useState<number | null>(null);
-
-  const { title, difficulty, correct_answer_id, explanation, options } = data;
+const Question = () => {
+  const { choice, updateChoice, questions, curQuestionIndex } =
+    useQuestionStore();
+  if (questions.length === 0) return;
+  const { title, difficulty, correct_answer_id, explanation, options } =
+    questions[curQuestionIndex];
+  const hasAnswered = choice !== null;
 
   return (
     <div className="bg-base-300 p-3 rounded-md">
@@ -20,15 +23,16 @@ const Question = ({ data }: { data: TypeQuestion }) => {
             <button
               key={i}
               className={`btn block w-1/2 mb-1 ${
-                i === choice && choice === +correct_answer_id
-                  ? 'btn-success translate-x-6 duration-700'
-                  : choice && i !== choice && i === +correct_answer_id
-                  ? 'btn-success translate-x-6 duration-700'
-                  : i === choice && choice !== +correct_answer_id
-                  ? 'btn-error translate-x-2 duration-700'
-                  : 'btn-soft'
+                hasAnswered
+                  ? i === +correct_answer_id
+                    ? 'btn-success translate-x-6 transition duration-300 '
+                    : i !== choice
+                    ? ''
+                    : 'btn-error -translate-x-2 transition duration-300'
+                  : ''
               } `}
-              onClick={() => setChoice(i)}
+              onClick={() => updateChoice(i)}
+              // disabled={hasAnswered}
             >
               {opt}
             </button>

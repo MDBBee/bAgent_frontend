@@ -1,51 +1,43 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { useSendRequestToBackend } from '../utils/hooks';
 import CountDown from '../components/challenges/CountDown';
 import Question from '../components/challenges/Question';
-
-// const example = {
-//   correct_answer_id: 0,
-//   difficulty: 'easy',
-//   explanation:
-//     'The // operator performs integer division, which discards the decimal part of the result. 7 // 2 equals 3.',
-//   id: 21,
-//   options: ['3', '3.5', '4', 'Error'],
-//   timestamp: '2025-06-09T09:20:21.452539',
-//   title: 'What is the output of the expression 7 // 2 in Python?',
-// };
-export type TypeQuestion = {
-  correct_answer_id: number;
-  difficulty: string;
-  explanation: string;
-  id: number;
-  options: Array<string>;
-  timestampt: Date;
-  title: string;
-};
-
-type Difficulty = 'easy' | 'medium' | 'hard' | null;
+// import { data } from 'react-router-dom';
+import { useQuestionStore, type Difficulty } from '../store';
+import NextButton from '../components/challenges/NextButton';
+import PrevButton from '../components/challenges/PrevButton';
+import { useEffect } from 'react';
 
 const GenerateChallenges = () => {
-  const [difficulty, setDificulty] = useState<Difficulty>('easy');
-  const [question, setQuestion] = useState<TypeQuestion | null>(null);
-  const [isLoading, setIsloading] = useState<boolean | null>(null);
-  const { queryBackend } = useSendRequestToBackend();
+  const { queryBackend, fetchQuotaHook } = useSendRequestToBackend();
+  const {
+    difficulty,
+    isLoading,
+    updateDifficulty,
+    fetchQuestions,
+    questions,
+    fetchQuota,
+    quota,
+  } = useQuestionStore();
 
-  useEffect(() => {}, []);
+  const quota_remaining = quota ? quota.quota_remaining : 0;
 
-  const fetchChallenges = async () => {
-    console.log('***CLICKED');
+  useEffect(() => {
+    fetchQuota(fetchQuotaHook);
+  }, [questions]);
 
-    const response = await queryBackend('generate-challenge', {
-      method: 'POST',
-      body: JSON.stringify({ difficulty }),
-    });
-    console.log(response);
-
-    setQuestion(response);
+  const handleGenerateQuestions = () => {
+    fetchQuestions(
+      '/api/generate-challenge',
+      {
+        method: 'POST',
+        body: JSON.stringify({ difficulty }),
+      },
+      queryBackend
+    );
   };
 
-  if (isLoading) return <h1>Is Loading!!</h1>;
+  // if (isLoading) return <h1>Is Loading!!</h1>;
   // if (error) return <h1>Something went wrong!!</h1>;
 
   return (
@@ -58,14 +50,18 @@ const GenerateChallenges = () => {
           <label className="select">
             <span className="label">Difficulty</span>
             <select
-              onChange={(e) => setDificulty(e.target.value as Difficulty)}
+              value={difficulty}
+              onChange={(e) => updateDifficulty(e.target.value as Difficulty)}
             >
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>
               <option value="hard">Hard</option>
             </select>
           </label>
-          <button className={`btn btn-default type`} onClick={fetchChallenges}>
+          <button
+            className={`btn btn-outline btn-primary`}
+            onClick={handleGenerateQuestions}
+          >
             Generate Question
           </button>
         </div>
@@ -73,14 +69,26 @@ const GenerateChallenges = () => {
 
         <div className="flex justify-center items-center gap-2 text-xl">
           <p className="">Remaining Challenges:</p>
-          <p className="text-center">4</p>
+          <p className="text-center">{quota_remaining}</p>
         </div>
         <div>
           <CountDown />
         </div>
       </div>
       <div className="divider"></div>
-      {question && <Question data={question} />}
+      {questions.length !== 0 && !isLoading ? (
+        <>
+          <Question />
+          <footer className="w-1/2 flex items-center justify-between">
+            <PrevButton />
+            <NextButton />
+          </footer>
+        </>
+      ) : !isLoading ? (
+        <p>START</p>
+      ) : (
+        <h1>Is Loading!!</h1>
+      )}
     </div>
   );
 };
