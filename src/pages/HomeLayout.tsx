@@ -5,9 +5,9 @@ import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react';
 
 const HomeLayout = () => {
   return (
-    <>
+    <div className="h-screen">
       <Navbar />
-      <section className="flex justify-center items-center py-20">
+      <section className="flex justify-center items-center">
         <SignedOut>
           <RedirectToSignIn />
         </SignedOut>
@@ -15,7 +15,7 @@ const HomeLayout = () => {
           <Outlet />
         </SignedIn>
       </section>
-    </>
+    </div>
   );
 };
 export default HomeLayout;

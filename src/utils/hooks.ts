@@ -40,33 +40,30 @@ export function useSendRequestToBackend() {
         Authorization: `Bearer ${token}`,
       },
     };
+    console.log('Hook', option);
 
-    try {
-      const request = await fetch(`http://localhost:8000${endPoint}`, {
-        ...option,
-        ...defaultOptions,
-      });
+    const request = await fetch(`http://localhost:8000${endPoint}`, {
+      ...option,
+      ...defaultOptions,
+    });
 
-      if (!request.ok) {
-        const errorMessage = await request.json().catch(() => null);
-        if (request.status === 429) {
-          throw new Error(
-            'Daily quota exhausted!!, Will be reset in the next 24hours'
-          );
-        }
+    if (!request.ok) {
+      const errorMessage = await request.json().catch(() => null);
+      if (request.status === 429) {
         throw new Error(
-          errorMessage?.detail ||
-            'Somethging went wrong, error from queryBackend!'
+          'Daily quota exhausted!!, Will be reset in the next 24hours'
         );
       }
-
-      const result = await request.json();
-      console.log('FROM HOOKS DOPTION', result);
-
-      return result;
-    } catch (error) {
-      console.log(error);
+      throw new Error(
+        errorMessage?.detail ||
+          'Somethging went wrong, error from queryBackend!'
+      );
     }
+
+    const result = await request.json();
+    console.log('FROM HOOKS DOPTION', result);
+
+    return result;
   };
 
   const fetchQuotaHook = async (): Promise<QuotaType | undefined> => {

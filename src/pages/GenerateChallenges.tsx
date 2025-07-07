@@ -1,23 +1,21 @@
-// import { useEffect, useState } from 'react';
 import { useSendRequestToBackend } from '../utils/hooks';
 import CountDown from '../components/challenges/CountDown';
-import Question from '../components/challenges/Question';
-// import { data } from 'react-router-dom';
-import { useQuestionStore, type Difficulty } from '../store';
-import NextButton from '../components/challenges/NextButton';
-import PrevButton from '../components/challenges/PrevButton';
 import { useEffect } from 'react';
+import QuestionContainer from '../components/challenges/QuestionContainer';
+import { useQuestionStore, type Difficulty } from '../store';
+import ErrorChallenge from '../components/challenges/ErrorChallenge';
 
 const GenerateChallenges = () => {
   const { queryBackend, fetchQuotaHook } = useSendRequestToBackend();
   const {
     difficulty,
-    isLoading,
     updateDifficulty,
     fetchQuestions,
     questions,
     fetchQuota,
     quota,
+    error,
+    programmingLanguage,
   } = useQuestionStore();
 
   const quota_remaining = quota ? quota.quota_remaining : 0;
@@ -31,7 +29,7 @@ const GenerateChallenges = () => {
       '/api/generate-challenge',
       {
         method: 'POST',
-        body: JSON.stringify({ difficulty }),
+        body: JSON.stringify({ difficulty, programmingLanguage }),
       },
       queryBackend
     );
@@ -41,12 +39,11 @@ const GenerateChallenges = () => {
   // if (error) return <h1>Something went wrong!!</h1>;
 
   return (
-    <div className="bg-base-200 mx-auto w-6xl px-8 p-6 rounded-md">
-      <h1>Refined Challenge Generator</h1>
-      <div className="divider"></div>
-      <div className="flex justify-between ">
+    <div className="bg-base-200 mx-auto w-6xl px-8 p-2 rounded-md ">
+      {/* <div className="divider m-0"></div> */}
+      <div className="grid lg:grid-cols-4 md:grid-cols-3">
         {/* Form */}
-        <div className="flex justify-center items-center">
+        <div className="md:col-span-2 flex justify-center items-center">
           <label className="select">
             <span className="label">Difficulty</span>
             <select
@@ -67,28 +64,26 @@ const GenerateChallenges = () => {
         </div>
         {/* Quota */}
 
-        <div className="flex justify-center items-center gap-2 text-xl">
-          <p className="">Remaining Challenges:</p>
-          <p className="text-center">{quota_remaining}</p>
+        <div className="flex justify-center items-center gap-2 text-lg">
+          <p className="capitalize font-bold">Remaining Quota:</p>
+          <p className="text-center font-bold">{quota_remaining}</p>
         </div>
-        <div>
+        <div className="mx-auto md:col-span-full lg:col-span-1 md:mt-2 text-sm">
           <CountDown />
+          <span className="capitalize font-bold text-center">
+            Time to reset quota
+          </span>
         </div>
+        <div className="col-span-full divider" />
+        {/* Question */}
+        {error ? (
+          <div className="col-span-full overflow-x-hidden">
+            <ErrorChallenge error={error} />
+          </div>
+        ) : (
+          <QuestionContainer />
+        )}
       </div>
-      <div className="divider"></div>
-      {questions.length !== 0 && !isLoading ? (
-        <>
-          <Question />
-          <footer className="w-1/2 flex items-center justify-between">
-            <PrevButton />
-            <NextButton />
-          </footer>
-        </>
-      ) : !isLoading ? (
-        <p>START</p>
-      ) : (
-        <h1>Is Loading!!</h1>
-      )}
     </div>
   );
 };

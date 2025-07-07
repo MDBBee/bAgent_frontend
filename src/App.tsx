@@ -7,6 +7,7 @@ import ChallengesHistory from './pages/ChallengesHistory';
 import SingleChallenge from './components/SingleChallenge';
 import ClerkProviderContext from './auth/ClerkProvider';
 import Login from './auth/Login';
+import HomePage from './pages/HomePage';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <HomePage />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'agentq',
         element: <GenerateChallenges />,
         errorElement: <ErrorElement />,
       },
@@ -41,7 +47,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ClerkProviderContext>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </ClerkProviderContext>
   );
 }

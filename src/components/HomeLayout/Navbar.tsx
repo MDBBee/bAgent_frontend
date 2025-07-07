@@ -1,20 +1,19 @@
-import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
-import { LiaSignInAltSolid } from 'react-icons/lia';
-import { Link, NavLink } from 'react-router-dom';
-import ThemeToggle from './ThemeToggle';
+import { NavLink } from 'react-router-dom';
+import NavbarRight from '../navbar/NavbarRight';
+import MobileDrawer from '../navbar/MobileDrawer';
 
 const Navbar = () => {
   return (
     <nav className="bg-base-300">
-      <div className="align-element p-4 flex items-center justify-between">
+      <div className="align-element p-2 flex items-center justify-between">
         {/* Start */}
         <NavLink to="/" className="btn btn-neutral text-3xl">
           bA
         </NavLink>
         {/* Middle */}
-        <div className="mx-4 flex">
+        <div className="mx-4  md:flex hidden">
           <NavLink
-            to="/"
+            to="/agentQ"
             className="capitalize mr-4 bg-base-100 py-2 px-4 rounded-md"
           >
             Challenges
@@ -27,18 +26,12 @@ const Navbar = () => {
           </NavLink>
         </div>
         {/* End */}
-        <div className="flex items-center justify-center gap-2">
-          {/* Theme */}
-          <ThemeToggle />
-          {/* Auth */}
-          <SignedOut>
-            <Link to="/login" className="btn text-3xl">
-              <LiaSignInAltSolid className="text-3xl" />
-            </Link>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+        <div className=" md:block hidden">
+          <NavbarRight />
+        </div>
+        {/* Mobile */}
+        <div className="md:hidden flex-col gap-4 ">
+          <MobileDrawer />
         </div>
       </div>
     </nav>
