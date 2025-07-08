@@ -35,9 +35,6 @@ const GenerateChallenges = () => {
     );
   };
 
-  // if (isLoading) return <h1>Is Loading!!</h1>;
-  // if (error) return <h1>Something went wrong!!</h1>;
-
   return (
     <div className="bg-base-200 mx-auto w-6xl px-8 p-2 rounded-md ">
       {/* <div className="divider m-0"></div> */}
@@ -71,7 +68,7 @@ const GenerateChallenges = () => {
         <div className="mx-auto md:col-span-full lg:col-span-1 md:mt-2 text-sm">
           <CountDown />
           <span className="capitalize font-bold text-center">
-            Time to reset quota
+            Time to reset daily quota
           </span>
         </div>
         <div className="col-span-full divider" />
