@@ -15,7 +15,7 @@ const Question = () => {
   const hasAnswered = choice !== null;
 
   return (
-    <div className="bg-base-300 p-3 rounded-md h-[30rem] overflow-y-scroll">
+    <div className="bg-base-300 p-3 rounded-md h-[30rem] overflow-y-scroll mb-2">
       <div className="flex justify-start items-start gap-3 mb-3">
         <h2 className="font-bold mb-4">Difficulty:</h2>
         <span className="capitalize">{difficulty}</span>

@@ -9,6 +9,10 @@ import ClerkProviderContext from './auth/ClerkProvider';
 import Login from './auth/Login';
 import HomePage from './pages/HomePage';
 
+import QuestionContainer from './components/challenges/QuestionContainer';
+import HighScore from './components/challenges/HighScore';
+import MultiAgent from './pages/MultiAgent';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -24,15 +28,32 @@ const router = createBrowserRouter([
         path: 'agentq',
         element: <GenerateChallenges />,
         errorElement: <ErrorElement />,
+        children: [
+          {
+            index: true,
+            element: <QuestionContainer />,
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: 'history',
+            element: <ChallengesHistory />,
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: 'history/:id',
+            element: <SingleChallenge />,
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: 'highscore',
+            element: <HighScore />,
+            errorElement: <ErrorElement />,
+          },
+        ],
       },
       {
-        path: 'history',
-        element: <ChallengesHistory />,
-        errorElement: <ErrorElement />,
-      },
-      {
-        path: 'history/:id',
-        element: <SingleChallenge />,
+        path: 'multiAgent',
+        element: <MultiAgent />,
         errorElement: <ErrorElement />,
       },
     ],

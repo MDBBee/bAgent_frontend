@@ -24,17 +24,18 @@ const QuestionContainer = () => {
   } = useQuestionStore();
 
   return (
-    <div className="col-span-full overflow-x-hidden">
+    <div className=" overflow-x-hidden">
       {questions.length !== 0 && !isLoading ? (
         <div>
-          {/* Questions */}
+          {/* Questions component*/}
           <Question />
-          <footer className="md:w-1/3   flex items-center justify-between">
+          <footer className="flex items-center justify-around">
             <PrevButton />
             <NextButton />
           </footer>
         </div>
       ) : !isLoading ? (
+        // Return this if not isLoading and not questions
         <div className="mb-4 p-4 space-y-4">
           <h2 className="capitalize text-2xl font-bold py-4 mb-4">
             Welcome To Coding tutor. Agent powered questionaire
@@ -44,7 +45,7 @@ const QuestionContainer = () => {
             comprise of 15 questions.{' '}
           </p>
           <p>Start by setting your question Parameters below: </p>
-          {/* Programing Language */}
+          {/* Programing Language select component*/}
           <div>
             <label className="select">
               <span className="label">Programming Language</span>
@@ -65,7 +66,7 @@ const QuestionContainer = () => {
             </label>
           </div>
 
-          {/* Timer */}
+          {/* Timer component*/}
           <div>
             <label className="select">
               <span className="label">Timer</span>
@@ -87,6 +88,7 @@ const QuestionContainer = () => {
           </div>
         </div>
       ) : (
+        // Retur this skeleton if isLoading === true
         <div className="bg-base-300 p-3 rounded-md h-[30rem] ">
           <div className="skeleton h-[20%] mb-4"></div>
           <div className="skeleton h-[70%]"></div>

@@ -1,9 +1,19 @@
 import { useSendRequestToBackend } from '../utils/hooks';
 import CountDown from '../components/challenges/CountDown';
 import { useEffect } from 'react';
-import QuestionContainer from '../components/challenges/QuestionContainer';
+// import QuestionContainer from '../components/challenges/QuestionContainer';
 import { useQuestionStore, type Difficulty } from '../store';
 import ErrorChallenge from '../components/challenges/ErrorChallenge';
+import { NavLink, Outlet } from 'react-router-dom';
+
+const sideBarLinks = [
+  // Absolute path
+  { name: 'Challenges', href: '/agentQ' },
+  // Relative path
+  { name: 'History', href: 'history' },
+  // Relative path
+  { name: 'Scores', href: 'highscore' },
+];
 
 const GenerateChallenges = () => {
   const { queryBackend, fetchQuotaHook } = useSendRequestToBackend();
@@ -53,7 +63,7 @@ const GenerateChallenges = () => {
             </select>
           </label>
           <button
-            className={`btn btn-outline btn-primary`}
+            className={`btn btn-outline btn-info`}
             onClick={handleGenerateQuestions}
           >
             Generate Question
@@ -78,7 +88,25 @@ const GenerateChallenges = () => {
             <ErrorChallenge error={error} />
           </div>
         ) : (
-          <QuestionContainer />
+          <div className="grid md:grid-cols-7 col-span-full">
+            <div className="col-span-1 p-2 ">
+              <h2 className="text-center leading-10">Menu</h2>
+              <div className="flex flex-col h-[30%] min-h-[30vh] justify-around">
+                {sideBarLinks.map((sl, i) => (
+                  <NavLink key={i} to={sl.href}>
+                    <button className="btn btn-soft btn-primary w-full">
+                      {' '}
+                      {sl.name}
+                    </button>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+            {/* Outlet for displaying children of this page */}
+            <div className="border-l-4 border-base-100 col-span-6">
+              <Outlet />
+            </div>
+          </div>
         )}
       </div>
     </div>
