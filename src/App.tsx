@@ -12,12 +12,13 @@ import HomePage from './pages/HomePage';
 import QuestionContainer from './components/challenges/QuestionContainer';
 import HighScore from './components/challenges/HighScore';
 import MultiAgent from './pages/MultiAgent';
+import Settings from './components/challenges/Settings';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <HomeLayout />,
-    errorElement: <Error />,
+    errorElement: <ErrorElement />,
     children: [
       {
         index: true,
@@ -47,6 +48,11 @@ const router = createBrowserRouter([
           {
             path: 'highscore',
             element: <HighScore />,
+            errorElement: <ErrorElement />,
+          },
+          {
+            path: 'settings',
+            element: <Settings />,
             errorElement: <ErrorElement />,
           },
         ],

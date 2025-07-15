@@ -8,11 +8,13 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 const sideBarLinks = [
   // Absolute path
-  { name: 'Challenges', href: '/agentQ' },
+  { name: 'Challenges', href: '' },
   // Relative path
   { name: 'History', href: 'history' },
   // Relative path
   { name: 'Scores', href: 'highscore' },
+  // Relative path
+  { name: 'Settings', href: 'settings' },
 ];
 
 const GenerateChallenges = () => {
@@ -88,13 +90,14 @@ const GenerateChallenges = () => {
             <ErrorChallenge error={error} />
           </div>
         ) : (
-          <div className="grid md:grid-cols-7 col-span-full">
+          <div className="grid md:grid-cols-8 col-span-full">
+            {/* Tabs on the left */}
             <div className="col-span-1 p-2 ">
               <h2 className="text-center leading-10">Menu</h2>
               <div className="flex flex-col h-[30%] min-h-[30vh] justify-around">
                 {sideBarLinks.map((sl, i) => (
                   <NavLink key={i} to={sl.href}>
-                    <button className="btn btn-soft btn-primary w-full">
+                    <button className="btn btn-soft btn-secondary w-full">
                       {' '}
                       {sl.name}
                     </button>
@@ -103,7 +106,7 @@ const GenerateChallenges = () => {
               </div>
             </div>
             {/* Outlet for displaying children of this page */}
-            <div className="border-l-4 border-base-100 col-span-6">
+            <div className="border-l-4 border-base-100 col-span-7 mb-4">
               <Outlet />
             </div>
           </div>

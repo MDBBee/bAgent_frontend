@@ -14,13 +14,21 @@ const Navbar = () => {
         <div className="mx-4  md:flex hidden">
           <NavLink
             to="/agentQ"
-            className="capitalize mr-4 bg-base-100 py-2 px-4 rounded-md btn btn-soft"
+            className={({ isActive }) =>
+              `capitalize mr-4 bg-base-100 py-2 px-4 rounded-md btn btn-soft ${
+                isActive ? 'btn-info' : ''
+              }`
+            }
           >
             Challenges
           </NavLink>
           <NavLink
             to="/multiAgent"
-            className="capitalize bg-base-100 py-2 px-4 rounded-md btn btn-soft"
+            className={({ isActive }) =>
+              `capitalize mr-4 bg-base-100 py-2 px-4 rounded-md btn btn-soft ${
+                isActive ? 'btn-info' : ''
+              }`
+            }
           >
             MultiAgent
           </NavLink>

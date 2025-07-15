@@ -145,10 +145,9 @@ export const useQuestionStore = create(
           curQuestionIndex: 0,
           error: '',
         });
-        return;
       } catch (error: any) {
         const [code, message] = error.message.split(':');
-        set({ error: message });
+        set({ error: message, isLoading: false });
         console.log('Error FROM STORE', code, 'Mss:', message);
       }
     },
