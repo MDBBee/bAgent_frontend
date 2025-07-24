@@ -5,14 +5,15 @@ import GenerateChallenges from './pages/GenerateChallenges';
 import ErrorElement from './components/ErrorElement';
 import ChallengesHistory from './pages/ChallengesHistory';
 import SingleChallenge from './components/SingleChallenge';
-import ClerkProviderContext from './auth/ClerkProvider';
-import Login from './auth/Login';
+import Login from './auth/LoginForm';
 import HomePage from './pages/HomePage';
 
 import QuestionContainer from './components/challenges/QuestionContainer';
 import HighScore from './components/challenges/HighScore';
 import MultiAgent from './pages/MultiAgent';
 import Settings from './components/challenges/Settings';
+import { useUserStore } from './store/user_store';
+import { useEffect } from 'react';
 
 const router = createBrowserRouter([
   {
@@ -72,11 +73,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
-    <ClerkProviderContext>
-      <RouterProvider router={router} />
-    </ClerkProviderContext>
-  );
+  const { setUser } = useUserStore();
+  useEffect(() => {
+    // return;
+    setUser();
+  }, []);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;

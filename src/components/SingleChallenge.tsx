@@ -1,4 +1,4 @@
 const SingleChallenge = () => {
-  return <div>SingleChallenge</div>;
+  return <div>SingleChallenge Coming soon</div>;
 };
 export default SingleChallenge;

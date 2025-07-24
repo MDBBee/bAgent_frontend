@@ -1,4 +1,4 @@
-import { useQuestionStore } from '../../store';
+import { useQuestionStore } from '../../store/questionaire_store';
 
 const NextButton = () => {
   const { curQuestionIndex, updateCurQuestionIndex } = useQuestionStore();

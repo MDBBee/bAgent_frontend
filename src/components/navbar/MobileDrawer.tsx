@@ -1,5 +1,7 @@
-import { NavLink } from 'react-router-dom';
 import NavbarRight from './NavbarRight';
+import SideBarMenu from '../challenges/SideBarMenu';
+import { FaBraille } from 'react-icons/fa6';
+import { FaWindowClose } from 'react-icons/fa';
 
 const MobileDrawer = () => {
   return (
@@ -8,7 +10,7 @@ const MobileDrawer = () => {
       <div className="drawer-content">
         {/* Page content here */}
         <label htmlFor="my-drawer-4" className="drawer-button btn btn-primary">
-          Open drawer
+          <FaBraille />
         </label>
       </div>
       <div className="drawer-side">
@@ -24,22 +26,11 @@ const MobileDrawer = () => {
               htmlFor="my-drawer-4"
               className="drawer-button btn btn-primary"
             >
-              Close
+              <FaWindowClose />
             </label>
           </li>
-          <NavLink
-            to="/"
-            className="capitalize mr-4 bg-base-100 py-2 px-4 rounded-md w-1/2"
-          >
-            Challenges
-          </NavLink>
 
-          <NavLink
-            to="/history"
-            className="capitalize bg-base-100 py-2 px-4 rounded-md w-1/2"
-          >
-            History
-          </NavLink>
+          <SideBarMenu />
 
           <NavbarRight className="justify-start ml-4 mt-4" />
         </ul>

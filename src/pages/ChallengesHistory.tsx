@@ -1,4 +1,4 @@
 const ChallengesHistory = () => {
-  return <div>ChallengesHistory</div>;
+  return <div>ChallengesHistory Coming soon...</div>;
 };
 export default ChallengesHistory;

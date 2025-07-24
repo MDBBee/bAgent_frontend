@@ -1,42 +1,46 @@
 import { useSendRequestToBackend } from '../utils/hooks';
 import CountDown from '../components/challenges/CountDown';
 import { useEffect } from 'react';
-// import QuestionContainer from '../components/challenges/QuestionContainer';
-import { useQuestionStore, type Difficulty } from '../store';
+import { useQuestionStore, type Difficulty } from '../store/questionaire_store';
 import ErrorChallenge from '../components/challenges/ErrorChallenge';
-import { NavLink, Outlet } from 'react-router-dom';
-
-const sideBarLinks = [
-  // Absolute path
-  { name: 'Challenges', href: '' },
-  // Relative path
-  { name: 'History', href: 'history' },
-  // Relative path
-  { name: 'Scores', href: 'highscore' },
-  // Relative path
-  { name: 'Settings', href: 'settings' },
-];
+import { useNavigate, Outlet } from 'react-router-dom';
+import { AnimatePresence, motion } from 'motion/react';
+import SideBarMenu from '../components/challenges/SideBarMenu';
+// import { useUserStore } from '../store/user_store';
+import FinishChallenge from '../components/challenges/FinishChallenge';
 
 const GenerateChallenges = () => {
   const { queryBackend, fetchQuotaHook } = useSendRequestToBackend();
+  // const { user } = useUserStore();
+  const navigate = useNavigate();
   const {
     difficulty,
     updateDifficulty,
     fetchQuestions,
     questions,
     fetchQuota,
+    curQuestionIndex,
     quota,
     error,
     programmingLanguage,
+    isLoading,
+    finish,
   } = useQuestionStore();
-
   const quota_remaining = quota ? quota.quota_remaining : 0;
+  const disableGenerateChallengeBtn =
+    questions.length !== 0 && curQuestionIndex !== questions.length - 1;
 
+  // Redirect users not logged in
+  // useEffect(() => {
+  //   if (user === null) navigate('/');
+  // }, [user]);
+  // Refresh quota after generating questions
   useEffect(() => {
     fetchQuota(fetchQuotaHook);
   }, [questions]);
 
   const handleGenerateQuestions = () => {
+    navigate('');
     fetchQuestions(
       '/api/generate-challenge',
       {
@@ -48,10 +52,12 @@ const GenerateChallenges = () => {
   };
 
   return (
-    <div className="bg-base-200 mx-auto w-6xl px-8 p-2 rounded-md ">
-      {/* <div className="divider m-0"></div> */}
+    <div className="bg-base-200 mx-auto w-6xl px-8 p-2 rounded-md relative">
+      <AnimatePresence mode="wait">
+        {finish && <FinishChallenge />}
+      </AnimatePresence>
       <div className="grid lg:grid-cols-4 md:grid-cols-3">
-        {/* Form */}
+        {/* TOp: Generate question Form/Button */}
         <div className="md:col-span-2 flex justify-center items-center">
           <label className="select">
             <span className="label">Difficulty</span>
@@ -65,8 +71,9 @@ const GenerateChallenges = () => {
             </select>
           </label>
           <button
-            className={`btn btn-outline btn-info`}
+            className={`btn btn-outline btn-info disabled:btn-error`}
             onClick={handleGenerateQuestions}
+            disabled={disableGenerateChallengeBtn || isLoading}
           >
             Generate Question
           </button>
@@ -84,33 +91,42 @@ const GenerateChallenges = () => {
           </span>
         </div>
         <div className="col-span-full divider" />
+
         {/* Question */}
-        {error ? (
-          <div className="col-span-full overflow-x-hidden">
-            <ErrorChallenge error={error} />
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-8 col-span-full">
-            {/* Tabs on the left */}
-            <div className="col-span-1 p-2 ">
-              <h2 className="text-center leading-10">Menu</h2>
-              <div className="flex flex-col h-[30%] min-h-[30vh] justify-around">
-                {sideBarLinks.map((sl, i) => (
-                  <NavLink key={i} to={sl.href}>
-                    <button className="btn btn-soft btn-secondary w-full">
-                      {' '}
-                      {sl.name}
-                    </button>
-                  </NavLink>
-                ))}
+        <AnimatePresence mode="wait">
+          {error ? (
+            <motion.div
+              className="col-span-full overflow-x-hidden"
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
+              key="error"
+            >
+              <ErrorChallenge error={error} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="challenge"
+              className="grid md:grid-cols-8 col-span-full"
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -50, opacity: 0 }}
+            >
+              {/* Tabs on the left */}
+              <div className="hidden md:block col-span-1 p-2">
+                <h2 className="text-center leading-10">Menu</h2>
+                <SideBarMenu />
               </div>
-            </div>
-            {/* Outlet for displaying children of this page */}
-            <div className="border-l-4 border-base-100 col-span-7 mb-4">
-              <Outlet />
-            </div>
-          </div>
-        )}
+              {/* Outlet for displaying children of this page */}
+              <motion.div
+                layout
+                className="border-l-4 border-base-100 col-span-7 mb-4"
+              >
+                <Outlet />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
 const HighScore = () => {
-  return <div>HighScore</div>;
+  return <div>Coming soon..</div>;
 };
 export default HighScore;

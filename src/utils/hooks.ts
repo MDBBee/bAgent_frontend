@@ -1,5 +1,3 @@
-import { useAuth } from '@clerk/clerk-react';
-
 export type ChallengeResponse = {
   title: string;
   options: string[];
@@ -7,7 +5,8 @@ export type ChallengeResponse = {
   correct_answer_id: string;
   explanation: string;
   timestamp: Date;
-  id: string;
+  userAnswer?: number | null;
+  question_id: string;
 };
 
 export type OptionsType =
@@ -25,60 +24,46 @@ export type QuotaType = {
 };
 
 export function useSendRequestToBackend() {
-  const { getToken } = useAuth();
-
-  // async function queryBackend(apiEndPoint: string, options: Options = {})
-  const queryBackend = async (
-    endPoint: string,
-    option: OptionsType
-  ): Promise<ChallengeResponse[] | undefined> => {
-    const token = await getToken();
-
-    const defaultOptions = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    console.log('Hook', option);
-
+  const queryBackend = async (endPoint: string, option: OptionsType) => {
     const request = await fetch(`http://localhost:8000${endPoint}`, {
       ...option,
-      ...defaultOptions,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
     });
 
     if (!request.ok) {
-      const errorMessage = await request.json().catch(() => null);
       if (request.status === 429) {
         throw new Error(
           'Daily quota exhausted!!, Will be reset in the next 24hours'
         );
       }
+      if (request.status === 401) {
+        throw new Error(
+          `${request?.statusText}: Please login or create an account to retrieve access!`
+        );
+      }
+      if (request.status === 400) {
+        throw new Error(`${request?.statusText}: Quota has been exhausted!`);
+      }
       throw new Error(
-        errorMessage?.detail ||
-          'Somethging went wrong, error from queryBackend!'
+        `${request?.status}-${request?.statusText}: Something went wrong!`
       );
     }
 
     const result = await request.json();
-    console.log('FROM HOOKS DOPTION', result);
 
     return result;
   };
 
   const fetchQuotaHook = async (): Promise<QuotaType | undefined> => {
-    const token = await getToken();
-
-    const defaultOptions = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
     try {
       const request = await fetch(`http://localhost:8000/api/quota`, {
-        ...defaultOptions,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
       });
 
       if (!request.ok) {

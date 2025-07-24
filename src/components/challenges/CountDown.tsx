@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useQuestionStore } from '../../store';
+import { useQuestionStore } from '../../store/questionaire_store';
 
 const calculateTimeLeft = (targetTime: string) => {
   const currentDate = new Date();
@@ -22,12 +22,9 @@ const CountDown = () => {
   const [count, setCount] = useState<ReturnType<typeof calculateTimeLeft>>();
   const { quota } = useQuestionStore();
   const lastReset = quota?.last_reset_date;
-  // console.log('✅✅LastReset', typeof lastReset);
-  // 2025-07-07T06:25:48.186813
 
   useEffect(() => {
     setCount(calculateTimeLeft(lastReset as string));
-    // console.log('✅✅', calculateTimeLeft(lastReset!));
 
     const interId = setInterval(() => {
       const newTime = calculateTimeLeft(lastReset as string);
@@ -44,7 +41,6 @@ const CountDown = () => {
     return (
       <div className="grid grid-flow-col gap-5 text-center auto-cols-max">
         <span className="loading loading-infinity loading-3xl "></span>
-        {/* <div className="skeleton h-32 w-32"></div> */}
       </div>
     );
 
