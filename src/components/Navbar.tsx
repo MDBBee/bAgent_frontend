@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
-import NavbarRight from '../navbar/NavbarRight';
-import MobileDrawer from '../navbar/MobileDrawer';
-import AppLogo from '../AppLogo';
-import { useUserStore } from '../../store/user_store';
+import NavbarRight from './navbar/NavbarRight';
+import MobileDrawer from './navbar/MobileDrawer';
+import AppLogo from './AppLogo';
+import { useUserStore } from '../store/user_store';
 
 const Navbar = () => {
   const { user } = useUserStore();

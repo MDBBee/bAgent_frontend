@@ -1,5 +1,5 @@
 import { Outlet, useNavigation } from 'react-router-dom';
-import Navbar from '../components/homeLayout/Navbar.tsx';
+import Navbar from '../components/Navbar.tsx';
 import Login from '../auth/LoginForm';
 import { useUserStore } from '../store/user_store';
 import { motion, AnimatePresence } from 'motion/react';
