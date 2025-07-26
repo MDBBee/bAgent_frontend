@@ -87,7 +87,7 @@ export const useUserStore = create(
     logInUser: async (loginData: BackEndSignUpType) => {
       set({ isUserLoading: true });
       try {
-        const response = await fetch('http://localhost:8000/auth/token', {
+        const response = await fetch('https://bagent.onrender.com/auth/token', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -154,7 +154,7 @@ export const useUserStore = create(
       console.log(signUpdata, 'Signup clicked from user_store hook Line80');
       set({ isUserLoading: true });
       try {
-        const response = await fetch('http://localhost:8000/auth/', {
+        const response = await fetch('https://bagent.onrender.com/auth/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
