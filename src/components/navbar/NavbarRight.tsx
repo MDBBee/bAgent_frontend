@@ -1,4 +1,3 @@
-// import ThemeToggle from '../homeLayout/ThemeToggle';
 import ThemeToggle from '../../components/homeLayout/ThemeToggle';
 import { LiaSignInAltSolid } from 'react-icons/lia';
 import { useUserStore } from '../../store/user_store';
