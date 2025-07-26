@@ -70,7 +70,7 @@ const SignUpForm = () => {
       animate={{ x: 0, opacity: 1, transition: { delay: 0.3 } }}
       exit={{ y: -50, opacity: 0 }}
       key="loginForm"
-      className="space-y-2 w-[30rem] h-[34rem] border-2 rounded-xl absolute top-[50%] left-1/2 -translate-x-[50%] -translate-y-[50%] p-4 text-center z-20"
+      className="space-y-2 md:w-[30rem] md:h-[34rem] border-2 rounded-xl absolute top-[50%] left-1/2 -translate-x-[50%] -translate-y-[50%] p-4 text-center z-20 w-[70%] h-[70%]"
     >
       <AppLogo size="h-20 w-25" />
       <h2 className="font-bold text-2xl">Create An Account</h2>
