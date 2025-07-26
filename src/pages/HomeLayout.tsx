@@ -19,7 +19,7 @@ const HomeLayout = () => {
           <>
             <motion.div
               initial={{ height: 0, opacity: 0 }}
-              animate={{ height: '90%', opacity: 1 }}
+              animate={{ height: '100%', opacity: 1 }}
               exit={{ height: 0, opacity: 0, transition: { delay: 0.3 } }}
               transition={{ type: 'tween' }}
               key="overlay"
