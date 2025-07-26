@@ -42,8 +42,14 @@ const LogInForm = () => {
           },
           { type: 'keyframes' }
         );
-      } else {
-        console.log(JSON.stringify(error, null, 2));
+      } else if (error instanceof Error) {
+        console.log(error.message);
+        if (error.message.includes('Failed to fetch')) {
+          toast.error(
+            'Server is currently unavailable! Sorry for the inconvinience'
+          );
+        }
+        toast.error(error.message);
       }
     }
   };

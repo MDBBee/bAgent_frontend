@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @plugin "daisyui" {
-  themes: fantasy --default, night --prefersdark, cupcake;
+  themes: fantasy --default, night, cupcake, business --prefersdark;
 }
 
 @layer components {

@@ -26,8 +26,8 @@ type UserStoreType = {
   setUser: () => void;
   setAuthStart: () => void;
   logInUser: (loginData: BackEndSignUpType) => Promise<void>;
-  logOutUser: () => void;
-  signUpUser: (signUpdata: BackEndSignUpType) => void;
+  logOutUser: () => Promise<void>;
+  signUpUser: (signUpdata: BackEndSignUpType) => Promise<void>;
 };
 
 export const useUserStore = create(
@@ -74,7 +74,7 @@ export const useUserStore = create(
     setLogout: () => {
       set({ logout: true });
     },
-    setSignUp: () =>
+    setSignUp: async () =>
       set(() => {
         // const prevSignUp = state.signUp;
         return { signUp: true, login: true };
@@ -95,9 +95,14 @@ export const useUserStore = create(
           credentials: 'include',
           body: JSON.stringify(loginData),
         });
+        console.log(response);
 
-        if (!response.ok)
-          throw new Error("Couldn't create the user for some strange reason");
+        if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error("Account doesn't exist. Please create an account");
+          }
+          throw new Error('Please cross-check your credentials, login failed');
+        }
         const newUser: UserType = await response.json();
 
         set((state) => ({
@@ -111,7 +116,15 @@ export const useUserStore = create(
           },
         }));
       } catch (error) {
-        console.log(error, 'Error from user_store hook Line94');
+        if (error instanceof TypeError) {
+          throw new Error(error.message);
+        }
+
+        if (error instanceof Error) {
+          throw error;
+        }
+
+        throw new Error("Couldn't log into the account. Please contact admin");
       } finally {
         set({ isUserLoading: false });
       }
@@ -153,7 +166,6 @@ export const useUserStore = create(
         if (!response.ok)
           throw new Error("Couldn't create the user for some strange reason");
         const newUser: UserType = await response.json();
-        console.log('🐳🐳🐳NEWUSER', newUser);
 
         set((state) => ({
           user: {

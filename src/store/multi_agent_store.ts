@@ -11,11 +11,13 @@ type multiAgentState = {
   checkpointId: string | null;
   error: string | null;
   messages: Message[];
+  toolCall: string | null;
   setRequestMessage: (quest: TypeQuestionToCopy | null) => void;
   setChatLoading: (val: boolean) => void;
   setCheckpointId: (val: string) => void;
   setError: (val: string | null) => void;
   setMessages: (val: TypeUserMessage) => void;
+  setToolCall: (val: string | null) => void;
 };
 
 export const useMultiAgentStore = create(
@@ -26,6 +28,7 @@ export const useMultiAgentStore = create(
       checkpointId: null,
       error: null,
       messages: [],
+      toolCall: null,
       setRequestMessage: (quest: TypeQuestionToCopy | null) =>
         set(() => ({ requestMessage: quest })),
       setChatLoading: (val: boolean) => set({ chatLoading: val }),
@@ -58,6 +61,10 @@ export const useMultiAgentStore = create(
             };
           }
           return {};
+        }),
+      setToolCall: (val: string | null) =>
+        set({
+          toolCall: val,
         }),
     }),
     { name: 'chatBot', store: 'ChatBot' }

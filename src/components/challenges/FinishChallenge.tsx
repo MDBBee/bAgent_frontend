@@ -32,12 +32,33 @@ const FinishChallenge = () => {
   const date = new Date();
 
   const handleSaveToHistory = async () => {
-    const questionsToSave = questions.map((q) => ({
-      ...q,
-      difficulty: difficulty,
-      programmingLanguage: programmingLanguage,
-      createdBy: user?.email,
-    }));
+    const unansweredQuestions = questions
+      .map((q, index) => (q.userAnswer === undefined ? index + 1 : -1))
+      .filter((index) => index !== -1);
+
+    toast.error(
+      `A subtle reminder: Question ${[
+        ...unansweredQuestions,
+      ]} have not been answered.`
+    );
+
+    const questionsToSave = questions.map((q) => {
+      if (!q.userAnswer) {
+        return {
+          ...q,
+          difficulty: difficulty,
+          programmingLanguage: programmingLanguage,
+          createdBy: user?.email,
+          userAnswer: null,
+        };
+      }
+      return {
+        ...q,
+        difficulty: difficulty,
+        programmingLanguage: programmingLanguage,
+        createdBy: user?.email,
+      };
+    });
 
     updateIsLoading();
     try {
@@ -48,7 +69,7 @@ const FinishChallenge = () => {
           body: JSON.stringify(questionsToSave),
         }
       );
-      toast(result.message);
+      toast.success(result.message);
       resetChallengeRound();
       updateFinish();
       navigate('/agentQ/settings');
@@ -105,20 +126,6 @@ const FinishChallenge = () => {
                 </td>
                 <td className="capitalize">{difficulty}</td>
                 <td>{date.toLocaleString()}</td>
-              </tr>
-              {/* row 2 */}
-              <tr>
-                <th>2</th>
-                <td>Hart Hagerty</td>
-                <td>Desktop Support Technician</td>
-                <td>Purple</td>
-              </tr>
-              {/* row 3 */}
-              <tr>
-                <th>3</th>
-                <td>Brice Swyre</td>
-                <td>Tax Accountant</td>
-                <td>Red</td>
               </tr>
             </tbody>
           </table>

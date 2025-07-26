@@ -81,6 +81,7 @@ export const useQuestionStore = create(
             await queryBackend(endPoint, option);
           if (!data)
             throw new Error('Data fetching failed!, from store, line 60');
+
           set({
             questions: data.questions,
             isLoading: false,

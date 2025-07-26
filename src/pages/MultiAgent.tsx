@@ -25,6 +25,7 @@ const MultiAgent = () => {
     setError,
     messages,
     setMessages,
+    setToolCall,
   } = useMultiAgentStore();
   // const { user } = useUserStore();
   const { programmingLanguage } = useQuestionStore();
@@ -118,12 +119,15 @@ const MultiAgent = () => {
                 setCheckpointId(data.checkpoint_id);
                 break;
               case 'content':
+                setToolCall(null);
                 setMessages({ role: 'assistant', content: data.content });
                 break;
               case 'search_start':
+                setToolCall('🌐 Searching the web 🛜');
                 break;
               case 'search_results':
-                console.log('Search results:', data.urls);
+                setToolCall(null);
+                // console.log('Search results:', data.urls);
 
                 break;
               case 'end':
@@ -172,7 +176,7 @@ const MultiAgent = () => {
         <div className="w-full flex justify-center relative">
           <textarea
             ref={textAreaRef}
-            className="h-20 rounded-lg p-4 text-lg text-inherit resize-none w-full border-2"
+            className="h-20 rounded-lg p-4 text-sm text-inherit resize-none w-full border-2"
             name="query"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {

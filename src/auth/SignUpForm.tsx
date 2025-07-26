@@ -4,6 +4,7 @@ import { motion, useAnimate, stagger } from 'motion/react';
 import * as z from 'zod';
 import { toast } from 'react-toastify';
 import { LuLoaderPinwheel } from 'react-icons/lu';
+import { useNavigate } from 'react-router-dom';
 
 export const SignUpSchema = z
   .object({
@@ -21,10 +22,11 @@ export const SignUpSchema = z
   );
 
 const SignUpForm = () => {
-  const { signUpUser, setLogin, isUserLoading } = useUserStore();
+  const { signUpUser, setLogin, isUserLoading, setAuthStart } = useUserStore();
+  const navigate = useNavigate();
   const [scope, animate] = useAnimate();
 
-  const handleFormSubmition = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmition = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const email = data.get('email') as string;
@@ -33,9 +35,13 @@ const SignUpForm = () => {
 
     try {
       SignUpSchema.parse({ email, password, confirmPassword });
-      signUpUser({ email, password });
+
+      await signUpUser({ email, password });
       toast.success('Accout created successfully!');
-      //   setAuthStart();
+
+      setAuthStart();
+      setLogin();
+      navigate('/agentQ');
     } catch (error) {
       if (error instanceof z.ZodError) {
         const path =

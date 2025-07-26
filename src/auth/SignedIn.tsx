@@ -2,9 +2,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useUserStore } from '../store/user_store';
 import { toast } from 'react-toastify';
 import { LuLoaderPinwheel } from 'react-icons/lu';
+import { useQuestionStore } from '../store/questionaire_store';
 
 const SignedIn = () => {
   const { user, logOutUser, isUserLoading } = useUserStore();
+  const { resetChallengeRound } = useQuestionStore();
   const navigate = useNavigate();
   const alphaLogo = user?.email?.split('')[0].toLocaleUpperCase() || 'A';
 
@@ -35,6 +37,7 @@ const SignedIn = () => {
           className="btn text-sm"
           onClick={() => {
             logOutUser();
+            resetChallengeRound();
             toast('Logged out user');
             navigate('/');
           }}

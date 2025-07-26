@@ -7,7 +7,7 @@ const Messages = ({
 }: {
   refProp: React.RefObject<HTMLDivElement | null>;
 }) => {
-  const { messages, chatLoading } = useMultiAgentStore();
+  const { messages, chatLoading, toolCall } = useMultiAgentStore();
 
   return (
     <div className="space-y-4 p-4 overflow-y-auto h-[85%] ">
@@ -24,7 +24,6 @@ const Messages = ({
                 </pre>
               ),
               //@ts-expect-error
-              //Unkown
               code: ({ inline, className, children, ...props }) => {
                 if (inline) {
                   return (
@@ -73,12 +72,18 @@ const Messages = ({
       })}
 
       {chatLoading && (
-        <div className="chat chat-start max-w-full">
-          <div className="chat-bubble chat-bubble-neutral whitespace-pre-wrap">
-            <div className="skeleton h-4 w-28"></div>
+        <div className="chat chat-start w-full">
+          <div className="chat-bubble chat-bubble-neutral whitespace-pre-wrap w-full">
+            <div className="skeleton h-4 w-full"></div>
             <div className="skeleton h-4 w-full mt-2"></div>
             <div className="skeleton h-4 w-full mt-2"></div>
           </div>
+        </div>
+      )}
+
+      {toolCall && (
+        <div className="skeleton p-1 inline-block  mt-2">
+          <h2>{toolCall}....</h2>
         </div>
       )}
     </div>
