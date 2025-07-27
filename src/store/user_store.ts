@@ -30,6 +30,8 @@ type UserStoreType = {
   signUpUser: (signUpdata: BackEndSignUpType) => Promise<void>;
 };
 
+const URL: string = import.meta.env.VITE_API_URL;
+
 export const useUserStore = create(
   devtools<UserStoreType>((set) => ({
     user: null,
@@ -40,14 +42,12 @@ export const useUserStore = create(
     isUserLoading: false,
     setUser: async (): Promise<void> => {
       try {
-        const resp = await fetch('http://localhost:8000/auth/user', {
+        const resp = await fetch(URL + '/auth/user', {
           credentials: 'include', // 👈 include the cookie
         });
 
         if (!resp.ok) {
-          throw new Error(
-            "Failed to fetch user from 'http://127.0.0.1:8000/auth/user'"
-          );
+          throw new Error(`Failed to fetch user from '${URL}/auth/user'`);
         }
 
         const user: UserType = await resp.json();
@@ -87,7 +87,7 @@ export const useUserStore = create(
     logInUser: async (loginData: BackEndSignUpType) => {
       set({ isUserLoading: true });
       try {
-        const response = await fetch('https://bagent.onrender.com/auth/token', {
+        const response = await fetch(URL + '/auth/token', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -95,7 +95,6 @@ export const useUserStore = create(
           credentials: 'include',
           body: JSON.stringify(loginData),
         });
-        console.log(response);
 
         if (!response.ok) {
           if (response.status === 401) {
@@ -134,7 +133,7 @@ export const useUserStore = create(
     logOutUser: async () => {
       set({ isUserLoading: true });
       try {
-        const response = await fetch('http://localhost:8000/auth/logout', {
+        const response = await fetch(URL + '/auth/logout', {
           method: 'POST',
           credentials: 'include',
         });
@@ -154,7 +153,7 @@ export const useUserStore = create(
       console.log(signUpdata, 'Signup clicked from user_store hook Line80');
       set({ isUserLoading: true });
       try {
-        const response = await fetch('https://bagent.onrender.com/auth/', {
+        const response = await fetch(URL + '/auth/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

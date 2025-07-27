@@ -23,9 +23,11 @@ export type QuotaType = {
   id: number;
 };
 
+const URL: string = import.meta.env.VITE_API_URL;
+
 export function useSendRequestToBackend() {
   const queryBackend = async (endPoint: string, option: OptionsType) => {
-    const request = await fetch(`http://localhost:8000${endPoint}`, {
+    const request = await fetch(`${URL}${endPoint}`, {
       ...option,
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +61,7 @@ export function useSendRequestToBackend() {
 
   const fetchQuotaHook = async (): Promise<QuotaType | undefined> => {
     try {
-      const request = await fetch(`http://localhost:8000/api/quota`, {
+      const request = await fetch(`${URL}/api/quota`, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -12,6 +12,7 @@ import { useMultiAgentStore } from '../store/multi_agent_store';
 import { useQuestionStore } from '../store/questionaire_store';
 // import { useNavigate } from 'react-router-dom';
 // import { useUserStore } from '../store/user_store';
+const apiUrl: string = import.meta.env.VITE_API_URL;
 
 const MultiAgent = () => {
   const {
@@ -77,7 +78,7 @@ const MultiAgent = () => {
     setRequestMessage(null);
     form.reset();
 
-    const url = new URL('http://localhost:8000/agent/researcher');
+    const url = new URL(`${apiUrl}/agent/researcher`);
     url.searchParams.append('message', query as string);
     if (checkpointId) url.searchParams.append('checkpoint_id', checkpointId);
 
