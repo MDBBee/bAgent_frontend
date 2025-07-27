@@ -32,7 +32,7 @@ const QuestionContainer = () => {
               {/* Questions component*/}
               <Question />
               {!finish && (
-                <footer className="flex items-center justify-around">
+                <footer className="flex items-center justify-around md:flex-nowrap flex-wrap-reverse gap-1 md:gap-0">
                   <PrevButton />
                   <CopyQuestionButton />
                   <NextButton />

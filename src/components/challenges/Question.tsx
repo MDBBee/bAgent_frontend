@@ -59,7 +59,7 @@ const Question = () => {
           className="flex flex-col justify-between h-[80%] "
         >
           <div className="mb-4 ml-2">
-            <pre className="text-wrap">
+            <pre className="text-wrap w-[100%]">
               <code>{cleanTitle(title, programmingLanguage)}</code>
             </pre>
           </div>

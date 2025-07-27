@@ -8,7 +8,7 @@ const NextButton = () => {
 
   return (
     <button
-      className="btn btn-outline"
+      className="btn btn-outline md:order-none order-0"
       onClick={() => updateCurQuestionIndex(prevQuestion)}
       disabled={disableButton}
     >

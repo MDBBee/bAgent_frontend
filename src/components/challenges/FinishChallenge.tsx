@@ -36,11 +36,12 @@ const FinishChallenge = () => {
       .map((q, index) => (q.userAnswer === undefined ? index + 1 : -1))
       .filter((index) => index !== -1);
 
-    toast.error(
-      `A subtle reminder: Question ${[
-        ...unansweredQuestions,
-      ]} have not been answered.`
-    );
+    if (unansweredQuestions.length > 0) {
+      const dialog =
+        (document.getElementById('my_modal_5') as HTMLDialogElement) || null;
+      dialog?.showModal();
+      return;
+    }
 
     const questionsToSave = questions.map((q) => {
       if (!q.userAnswer) {
@@ -107,7 +108,7 @@ const FinishChallenge = () => {
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 h-[60%] p-4 mb-4">
           <table className="table">
             {/* head */}
-            <thead>
+            <thead className="border-b-2">
               <tr>
                 <th></th>
                 <th>Score</th>
@@ -117,26 +118,26 @@ const FinishChallenge = () => {
             </thead>
             <tbody>
               {/* row 1 */}
-              <tr>
+              <tr className="text-xs md:text-base text-left border-b-1">
                 <th>1</th>
                 <td>
-                  {`(
-                  ${totalNumOfCorrectAnswer} / ${totalNumQuestions})`}{' '}
-                  {scorePercent.toFixed(1)}%
+                  {/* {`(
+                  ${totalNumOfCorrectAnswer} / ${totalNumQuestions})`}{' '} */}
+                  ~{scorePercent.toFixed(0)}%
                 </td>
                 <td className="capitalize">{difficulty}</td>
-                <td>{date.toLocaleString()}</td>
+                <td>{date.toDateString()}</td>
               </tr>
             </tbody>
           </table>
         </div>
         {/* Options */}
         <div className="space-y-10">
-          <h2 className="text-center text-lg">
+          <h2 className="text-center md:text-lg text-sm">
             <span className="font-bold">Note:</span> Saving this challenge round
             to history, guarantees non-repition of generated questions.
           </h2>
-          <div className=" flex justify-center items-center gap-8">
+          <div className=" flex justify-center items-center md:gap-8 md:flex-nowrap flex-wrap-reverse">
             <button className="btn btn-neutral">Restart</button>
             <button className="btn btn-success" onClick={handleSaveToHistory}>
               {isLoading ? (

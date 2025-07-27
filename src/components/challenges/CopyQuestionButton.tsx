@@ -25,7 +25,7 @@ const CopyQuestionButton = () => {
 
   return (
     <button
-      className="btn btn-outline btn-primary group"
+      className="btn btn-outline btn-primary group md:order-none order-3"
       onClick={handleCopyQuest}
       //   disabled={disableButton}
     >

@@ -95,6 +95,7 @@ export const useUserStore = create(
           credentials: 'include',
           body: JSON.stringify(loginData),
         });
+        console.log('✅✅LOGINURL', URL + '/auth/token');
 
         if (!response.ok) {
           if (response.status === 401) {
@@ -137,6 +138,7 @@ export const useUserStore = create(
           method: 'POST',
           credentials: 'include',
         });
+        console.log('✅✅LOGINURL', URL + '/auth/logout');
 
         if (!response.ok) throw new Error('Logout action, failed');
 

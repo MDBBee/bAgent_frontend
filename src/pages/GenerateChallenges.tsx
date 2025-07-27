@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import SideBarMenu from '../components/challenges/SideBarMenu';
 // import { useUserStore } from '../store/user_store';
 import FinishChallenge from '../components/challenges/FinishChallenge';
+import ConfirmSaveQuestions from '../components/challenges/ConfirmSaveQuestions';
 
 const GenerateChallenges = () => {
   const { queryBackend, fetchQuotaHook } = useSendRequestToBackend();
@@ -53,8 +54,10 @@ const GenerateChallenges = () => {
 
   return (
     <div className="bg-base-200 mx-auto w-6xl px-8 p-2 rounded-md relative">
+      <ConfirmSaveQuestions />
       <AnimatePresence mode="wait">
         {finish && <FinishChallenge />}
+        {/* {confirmSaveQuestions && <FinishChallenge />} */}
       </AnimatePresence>
       <div className="grid lg:grid-cols-4 md:grid-cols-3">
         {/* TOp: Generate question Form/Button */}

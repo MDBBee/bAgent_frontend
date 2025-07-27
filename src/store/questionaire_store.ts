@@ -18,6 +18,7 @@ type StateQuestion = {
   programmingLanguage: ProgrammingLanguage;
   timer: Timer;
   finish: boolean;
+  confirmSaveQuestions: boolean;
   //
   fetchQuestions: (
     endPoint: string,
@@ -39,6 +40,7 @@ type StateQuestion = {
   updateError: () => void;
   updateFinish: () => void;
   updateIsLoading: () => void;
+  updateConfirmSaveQuestions: () => void;
 };
 
 export const useQuestionStore = create(
@@ -54,6 +56,7 @@ export const useQuestionStore = create(
       programmingLanguage: 'python',
       timer: 'None',
       finish: false,
+      confirmSaveQuestions: false,
       updateDifficulty: (diff: Difficulty) => set(() => ({ difficulty: diff })),
       updateProgrammingLanguage: (lang: ProgrammingLanguage) =>
         set(() => ({ programmingLanguage: lang })),
@@ -126,6 +129,10 @@ export const useQuestionStore = create(
           curQuestionIndex: 0,
           choice: null,
         }),
+      updateConfirmSaveQuestions: () =>
+        set((state) => ({
+          confirmSaveQuestions: !state.confirmSaveQuestions,
+        })),
     }),
     { name: 'questions', store: 'questions' }
   )

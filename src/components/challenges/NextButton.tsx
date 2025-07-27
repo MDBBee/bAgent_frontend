@@ -6,22 +6,22 @@ const NextButton = () => {
 
   const numOfQuestions = questions.length;
   const nextQuestion = curQuestionIndex + 1;
-  const disableButton = curQuestionIndex > numOfQuestions - 2;
+  const disableNextButton = curQuestionIndex > numOfQuestions - 2;
 
   return (
     // Logic - display button-Finish when question at the end
     <div>
-      {!disableButton ? (
+      {!disableNextButton ? (
         <button
-          className="btn btn-outline"
+          className="btn btn-outline md:order-none order-2"
           onClick={() => updateCurQuestionIndex(nextQuestion)}
-          disabled={disableButton}
+          disabled={disableNextButton}
         >
           Next Question
         </button>
       ) : (
         <button
-          className="btn btn-secondary border-b-8 border-b-neutral hover:-translate-y-1 hover:scale-x-110 duration-300 transition-all active:border-b-4 active:-translate-y-0"
+          className="btn btn-secondary border-b-8 border-b-neutral hover:-translate-y-1 hover:scale-x-110 duration-300 transition-all active:border-b-4 active:-translate-y-0 md:order-none order-2"
           onClick={updateFinish}
         >
           Finish
