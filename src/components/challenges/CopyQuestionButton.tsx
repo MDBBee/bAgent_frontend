@@ -23,6 +23,7 @@ const CopyQuestionButton = () => {
       `I need your assistance with the question below. Be extremely precise and concise. Programing language: ${programmingLanguage}\n` +
         JSON.stringify(questToCopy, null, 2)
     );
+
     setAskAi();
     toast('Question sent to Agent');
     navigate('/multiAgent');
