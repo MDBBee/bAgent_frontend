@@ -70,7 +70,8 @@ const LogInForm = () => {
         className="btn btn-soft btn-success w-[70%] mb-4 text-lg"
         onClick={() => {
           console.log('GOOgle sign in');
-          window.location.href = 'http://localhost:8000/auth/google/login';
+          window.location.href =
+            'https://bagent.onrender.com/auth/google/login';
         }}
       >
         Sign in with <FcGoogle className="size-5" />
