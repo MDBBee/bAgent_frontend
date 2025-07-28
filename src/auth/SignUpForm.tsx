@@ -9,10 +9,10 @@ import { useNavigate } from 'react-router-dom';
 export const SignUpSchema = z
   .object({
     email: z.email('Invalid email, please cross-check'),
-    password: z.string().min(8, 'Password cannot be less than 8 characters!'),
+    password: z.string().min(6, 'Password cannot be less than 6 characters!'),
     confirmPassword: z
       .string()
-      .min(8, 'Password cannot be less than 8 characters!'),
+      .min(6, 'Password cannot be less than 6 characters!'),
   })
   .refine(
     (val) => {
@@ -58,8 +58,16 @@ const SignUpForm = () => {
           },
           { type: 'keyframes', delay: stagger(0.2) }
         );
-      } else {
-        console.log(JSON.stringify(error, null, 2));
+      } else if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch')) {
+          toast.error(
+            'Server is currently unavailable! Sorry for the inconvinience'
+          );
+        }
+        toast.error(error.message);
+        navigate('/');
+        setAuthStart();
+        setLogin();
       }
     }
   };
@@ -87,7 +95,7 @@ const SignUpForm = () => {
             placeholder="Type here"
             name="email"
             id="email"
-            defaultValue={'max@mail.com'}
+            // defaultValue={'max@mail.com'}
           />
         </fieldset>
         <fieldset className="fieldset w-full mb-4">
@@ -100,7 +108,7 @@ const SignUpForm = () => {
             placeholder="Type here"
             name="password"
             id="password"
-            defaultValue="12345678"
+            // defaultValue="12345678"
           />
         </fieldset>
         <fieldset className="fieldset w-full mb-4">
@@ -113,7 +121,7 @@ const SignUpForm = () => {
             placeholder="Type here"
             name="confirmPassword"
             id="confirmPassword"
-            defaultValue="12345678"
+            // defaultValue="12345678"
           />
         </fieldset>
         <button className="btn btn-soft w-full " type="submit">

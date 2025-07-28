@@ -95,13 +95,10 @@ export const useUserStore = create(
           credentials: 'include',
           body: JSON.stringify(loginData),
         });
-        console.log('✅✅LOGINURL', URL + '/auth/token');
 
         if (!response.ok) {
-          if (response.status === 401) {
-            throw new Error("Account doesn't exist. Please create an account");
-          }
-          throw new Error('Please cross-check your credentials, login failed');
+          const errorData = await response.json();
+          throw new Error(errorData.message);
         }
         const newUser: UserType = await response.json();
 
@@ -138,7 +135,6 @@ export const useUserStore = create(
           method: 'POST',
           credentials: 'include',
         });
-        console.log('✅✅LOGINURL', URL + '/auth/logout');
 
         if (!response.ok) throw new Error('Logout action, failed');
 
@@ -164,8 +160,10 @@ export const useUserStore = create(
           body: JSON.stringify(signUpdata),
         });
 
-        if (!response.ok)
-          throw new Error("Couldn't create the user for some strange reason");
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message);
+        }
         const newUser: UserType = await response.json();
 
         set((state) => ({
@@ -179,7 +177,8 @@ export const useUserStore = create(
           },
         }));
       } catch (error) {
-        console.log(error, 'Error from user_store hook Line94');
+        console.log('Error from user_store hook Line94', typeof error);
+        throw error;
       } finally {
         set({ isUserLoading: false });
       }

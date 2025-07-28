@@ -59,9 +59,15 @@ const ConfirmSaveQuestions = () => {
         }
       );
       toast.success(result.message);
+      // Reset the challenges
       resetChallengeRound();
+      // - close modal for result history
       updateFinish();
       navigate('/agentQ/settings');
+      // - close modal for save confirmation dialogue box
+      const dialog =
+        (document.getElementById('my_modal_1') as HTMLDialogElement) || null;
+      dialog?.close();
     } catch (error) {
       console.log(error);
     } finally {
@@ -74,7 +80,7 @@ const ConfirmSaveQuestions = () => {
 
     // - close modal for save confirmation
     const dialog =
-      (document.getElementById('my_modal_5') as HTMLDialogElement) || null;
+      (document.getElementById('my_modal_1') as HTMLDialogElement) || null;
     dialog?.close();
 
     // - close modal for result history
@@ -89,7 +95,7 @@ const ConfirmSaveQuestions = () => {
 
   return (
     <>
-      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+      <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Hello! {user?.username}</h3>
           <p className="py-4">

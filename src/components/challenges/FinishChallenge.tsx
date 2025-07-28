@@ -38,7 +38,7 @@ const FinishChallenge = () => {
 
     if (unansweredQuestions.length > 0) {
       const dialog =
-        (document.getElementById('my_modal_5') as HTMLDialogElement) || null;
+        (document.getElementById('my_modal_1') as HTMLDialogElement) || null;
       dialog?.showModal();
       return;
     }

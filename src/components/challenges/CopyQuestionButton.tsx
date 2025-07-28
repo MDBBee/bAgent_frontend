@@ -25,7 +25,7 @@ const CopyQuestionButton = () => {
     );
 
     setAskAi();
-    toast('Question sent to Agent');
+    toast('Review the question and send!');
     navigate('/multiAgent');
   };
 

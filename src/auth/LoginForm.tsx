@@ -95,7 +95,7 @@ const LogInForm = () => {
             Password
           </legend>
           <input
-            type="text"
+            type="password"
             className="input w-full "
             placeholder="Type here"
             name="password"
