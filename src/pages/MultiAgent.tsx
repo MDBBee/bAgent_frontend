@@ -56,13 +56,24 @@ const MultiAgent = () => {
       submitOnce.current = true;
       return;
     }
-    if (textAreaRef.current) {
-      textAreaRef.current.value =
-        `I need your assistance with the question below. Be extremely precise and concise. Programing language: ${programmingLanguage}\n` +
-        JSON.stringify(requestMessage, null, 2);
-    }
-    // Submit the form
-    formRef.current?.requestSubmit();
+
+    setTimeout(() => {
+      if (textAreaRef.current) {
+        textAreaRef.current.focus();
+        textAreaRef.current.value =
+          `I need your assistance with the question below. Be extremely precise and concise. Programing language: ${programmingLanguage}\n` +
+          JSON.stringify(requestMessage, null, 2);
+      }
+
+      formRef.current?.requestSubmit();
+    }, 0);
+    // if (textAreaRef.current) {
+    //   textAreaRef.current.value =
+    //     `I need your assistance with the question below. Be extremely precise and concise. Programing language: ${programmingLanguage}\n` +
+    //     JSON.stringify(requestMessage, null, 2);
+    // }
+    // // Submit the form
+    // formRef.current?.requestSubmit();
   }, [requestMessage]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

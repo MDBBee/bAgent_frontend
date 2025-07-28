@@ -19,10 +19,11 @@ const HomePage = () => {
         {/* text */}
         <div className="space-y-20 ">
           <p className="text-lg text-justify ">
-            Tap into the power of two intelligent agents — a dynamic Question
-            Generator and a capable Research Assistant — designed to accelerate
+            Tap into the power of two intelligent agents', a dynamic Question
+            Generator and a capable Research Assistant, designed to accelerate
             discovery, deepen understanding, and enhance inquiry. Built for
             curious minds, from student developers to seasoned researchers.
+            bAgents 😎👨‍💻
           </p>
 
           {user ? (

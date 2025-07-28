@@ -18,6 +18,8 @@ const CopyQuestionButton = () => {
   };
 
   const handleCopyQuest = async () => {
+    console.log('😎😎,QTC', questToCopy);
+
     setRequestMessage(questToCopy);
     toast('Question sent to Agent');
     navigate('/multiAgent');
