@@ -56,8 +56,9 @@ const MultiAgent = () => {
       submitOnce.current = true;
       return;
     }
-
-    formRef.current?.requestSubmit();
+    setTimeout(() => {
+      formRef.current?.requestSubmit();
+    }, 0);
   }, [askAi]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
