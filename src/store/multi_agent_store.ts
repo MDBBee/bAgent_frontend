@@ -7,30 +7,38 @@ type TypeUserMessage = { role: string; content: string };
 
 type multiAgentState = {
   requestMessage: TypeQuestionToCopy | null;
+  chatBotText: string;
   chatLoading: boolean;
   checkpointId: string | null;
   error: string | null;
   messages: Message[];
   toolCall: string | null;
+  askAi: boolean;
+
   setRequestMessage: (quest: TypeQuestionToCopy | null) => void;
+  setChatBotText: (val: string) => void;
   setChatLoading: (val: boolean) => void;
   setCheckpointId: (val: string) => void;
   setError: (val: string | null) => void;
   setMessages: (val: TypeUserMessage) => void;
   setToolCall: (val: string | null) => void;
+  setAskAi: () => void;
 };
 
 export const useMultiAgentStore = create(
   devtools<multiAgentState>(
     (set) => ({
       requestMessage: null,
+      chatBotText: '',
       chatLoading: false,
       checkpointId: null,
       error: null,
       messages: [],
       toolCall: null,
+      askAi: false,
       setRequestMessage: (quest: TypeQuestionToCopy | null) =>
         set(() => ({ requestMessage: quest })),
+      setChatBotText: (val: string) => set({ chatBotText: val }),
       setChatLoading: (val: boolean) => set({ chatLoading: val }),
       setCheckpointId: (val: string) => set({ checkpointId: val }),
       setError: (val: string | null) => set({ error: val }),
@@ -66,6 +74,10 @@ export const useMultiAgentStore = create(
         set({
           toolCall: val,
         }),
+      setAskAi: () =>
+        set((state) => ({
+          askAi: !state.askAi,
+        })),
     }),
     { name: 'chatBot', store: 'ChatBot' }
   )

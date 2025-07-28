@@ -9,15 +9,12 @@ import ErrorStream from '../components/multiagents/ErrorStream';
 import { PiSpinnerBallLight } from 'react-icons/pi';
 import { AnimatePresence } from 'motion/react';
 import { useMultiAgentStore } from '../store/multi_agent_store';
-import { useQuestionStore } from '../store/questionaire_store';
 // import { useNavigate } from 'react-router-dom';
 // import { useUserStore } from '../store/user_store';
 const apiUrl: string = import.meta.env.VITE_API_URL;
 
 const MultiAgent = () => {
   const {
-    requestMessage,
-    setRequestMessage,
     checkpointId,
     setCheckpointId,
     chatLoading,
@@ -27,9 +24,12 @@ const MultiAgent = () => {
     messages,
     setMessages,
     setToolCall,
+    chatBotText,
+    setChatBotText,
+    askAi,
+    setAskAi,
   } = useMultiAgentStore();
   // const { user } = useUserStore();
-  const { programmingLanguage } = useQuestionStore();
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -51,42 +51,24 @@ const MultiAgent = () => {
     if (textAreaRef.current) {
       textAreaRef.current.focus();
     }
-    if (requestMessage === null) return;
+    if (chatBotText === '') return;
     if (!submitOnce.current) {
       submitOnce.current = true;
       return;
     }
 
-    setTimeout(() => {
-      if (textAreaRef.current) {
-        textAreaRef.current.focus();
-        textAreaRef.current.value =
-          `I need your assistance with the question below. Be extremely precise and concise. Programing language: ${programmingLanguage}\n` +
-          JSON.stringify(requestMessage, null, 2);
-      }
-
-      formRef.current?.requestSubmit();
-    }, 0);
-    // if (textAreaRef.current) {
-    //   textAreaRef.current.value =
-    //     `I need your assistance with the question below. Be extremely precise and concise. Programing language: ${programmingLanguage}\n` +
-    //     JSON.stringify(requestMessage, null, 2);
-    // }
-    // // Submit the form
-    // formRef.current?.requestSubmit();
-  }, [requestMessage]);
+    formRef.current?.requestSubmit();
+  }, [askAi]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // console.log('CHKPNTID🐳🐳🐳:', typeof checkpointId);
+    const query = chatBotText;
     const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const query = formData.get('query') as string;
-
     if (query === '') return;
     setMessages({ role: 'user', content: query });
-    setRequestMessage(null);
+    setChatBotText('');
+    setAskAi();
     form.reset();
 
     const url = new URL(`${apiUrl}/agent/researcher`);
@@ -197,6 +179,8 @@ const MultiAgent = () => {
                 if (form) form.requestSubmit(); // trigger form submit
               }
             }}
+            value={chatBotText}
+            onChange={(e) => setChatBotText(e.target.value)}
           />
           <button
             className="btn btn-secondary btn-circle absolute  focus:transition-all focus:duration-300 active:transition-all active:duration-300 right-[1%] top-[25%]"

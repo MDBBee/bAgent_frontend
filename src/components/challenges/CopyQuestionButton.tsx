@@ -7,8 +7,9 @@ import { LuBrain } from 'react-icons/lu';
 export type TypeQuestionToCopy = { question: string; options: string[] };
 
 const CopyQuestionButton = () => {
-  const { curQuestionIndex, questions } = useQuestionStore();
-  const { setRequestMessage } = useMultiAgentStore();
+  const { curQuestionIndex, questions, programmingLanguage } =
+    useQuestionStore();
+  const { setChatBotText, setAskAi } = useMultiAgentStore();
   const navigate = useNavigate();
 
   const curQuest = questions[curQuestionIndex];
@@ -18,9 +19,11 @@ const CopyQuestionButton = () => {
   };
 
   const handleCopyQuest = async () => {
-    console.log('😎😎,QTC', questToCopy);
-
-    setRequestMessage(questToCopy);
+    setChatBotText(
+      `I need your assistance with the question below. Be extremely precise and concise. Programing language: ${programmingLanguage}\n` +
+        JSON.stringify(questToCopy, null, 2)
+    );
+    setAskAi();
     toast('Question sent to Agent');
     navigate('/multiAgent');
   };
