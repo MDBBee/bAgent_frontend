@@ -12,8 +12,8 @@ export const LoginSchema = z.object({
   password: z.string().min(8, 'Password cannot be less than 8 characters!'),
 });
 
-const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-const redirectUri = import.meta.env.VITE_API_URL;
+// const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+// const redirectUri = import.meta.env.VITE_API_URL;
 
 const LogInForm = () => {
   const { setSignUp, logInUser, isUserLoading, setAuthStart } = useUserStore();
@@ -73,7 +73,7 @@ const LogInForm = () => {
         className="btn btn-soft btn-success w-[70%] mb-4 text-lg"
         onClick={() => {
           console.log('GOOgle sign in');
-          window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=openid%20email%20profile&access_type=offline`;
+          window.location.href = `https://bagent.onrender.com/auth/google/login`;
         }}
       >
         Sign in with <FcGoogle className="size-5" />
