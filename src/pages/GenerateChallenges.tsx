@@ -9,6 +9,8 @@ import SideBarMenu from '../components/challenges/SideBarMenu';
 // import { useUserStore } from '../store/user_store';
 import FinishChallenge from '../components/challenges/FinishChallenge';
 import ConfirmSaveQuestions from '../components/challenges/ConfirmSaveQuestions';
+import { BsFillMenuButtonWideFill } from 'react-icons/bs';
+import QuestionTimer from '../components/challenges/QuestionTimer';
 
 const GenerateChallenges = () => {
   const { queryBackend, fetchQuotaHook } = useSendRequestToBackend();
@@ -26,6 +28,7 @@ const GenerateChallenges = () => {
     programmingLanguage,
     isLoading,
     finish,
+    showTimer,
   } = useQuestionStore();
   const quota_remaining = quota ? quota.quota_remaining : 0;
   const disableGenerateChallengeBtn =
@@ -61,25 +64,39 @@ const GenerateChallenges = () => {
       </AnimatePresence>
       <div className="grid lg:grid-cols-4 md:grid-cols-3">
         {/* TOp: Generate question Form/Button */}
-        <div className="md:col-span-2 flex justify-center items-center">
-          <label className="select">
-            <span className="label">Difficulty</span>
-            <select
-              value={difficulty}
-              onChange={(e) => updateDifficulty(e.target.value as Difficulty)}
+        <div className="md:col-span-2 ">
+          <div className="flex justify-center items-center">
+            <label className="select">
+              <span className="label">Difficulty</span>
+              <select
+                value={difficulty}
+                onChange={(e) => updateDifficulty(e.target.value as Difficulty)}
+              >
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </label>
+            <button
+              className={`btn btn-outline btn-info disabled:btn-error`}
+              onClick={handleGenerateQuestions}
+              disabled={disableGenerateChallengeBtn || isLoading}
             >
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </label>
-          <button
-            className={`btn btn-outline btn-info disabled:btn-error`}
-            onClick={handleGenerateQuestions}
-            disabled={disableGenerateChallengeBtn || isLoading}
-          >
-            Generate Question
-          </button>
+              Generate Question
+            </button>
+          </div>
+          {/* Timer display at Top */}
+          <AnimatePresence mode="wait">
+            {showTimer && (
+              <motion.div
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -10, opacity: 0 }}
+              >
+                <QuestionTimer />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         {/* Quota */}
 
@@ -117,7 +134,10 @@ const GenerateChallenges = () => {
             >
               {/* Tabs on the left */}
               <div className="hidden md:block col-span-1 p-2">
-                <h2 className="text-center leading-10">Menu</h2>
+                <h2 className="flex justify-center items-center leading-10 mb-4">
+                  {/* Menu */}
+                  <BsFillMenuButtonWideFill className="text-2xl" />
+                </h2>
                 <SideBarMenu />
               </div>
               {/* Outlet for displaying children of this page */}

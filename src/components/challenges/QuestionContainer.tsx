@@ -61,7 +61,7 @@ const QuestionContainer = () => {
               <Settings />
             </motion.div>
           ) : (
-            // Retur this skeleton if isLoading === true
+            // Return this skeleton if isLoading === true
             <motion.div
               initial={{ x: -100, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}

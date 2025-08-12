@@ -9,15 +9,25 @@ const programminglanguages = [
   { name: 'Typescript', value: 'typescript' },
   { name: 'Javascript', value: 'javascript' },
 ];
-const timer = [
+const timers = [
   { name: 'None', value: 0 },
-  { name: '5 mins', value: 5 },
-  { name: '10 mins', value: 10 },
-  { name: '15 mins', value: 15 },
+  { name: '2 mins', value: 2 * 60 },
+  { name: '5 mins', value: 5 * 60 },
+  { name: '10 mins', value: 10 * 60 },
+  { name: '15 mins', value: 15 * 60 },
 ];
 
 const Settings = () => {
-  const { programmingLanguage, updateProgrammingLanguage } = useQuestionStore();
+  const {
+    programmingLanguage,
+    updateProgrammingLanguage,
+    updateTimer,
+    timer,
+    updateProgressBarTimerConstant,
+    showTimer,
+    updateShowTimer,
+    questions,
+  } = useQuestionStore();
 
   return (
     <AnimatePresence>
@@ -65,18 +75,29 @@ const Settings = () => {
           <label className="select">
             <span className="label">Timer</span>
             <select
-              value={programmingLanguage}
-              onChange={(e) =>
-                updateProgrammingLanguage(e.target.value as ProgrammingLanguage)
-              }
+              value={timer}
+              onChange={(e) => {
+                updateTimer(Number(e.target.value));
+                updateProgressBarTimerConstant(Number(e.target.value));
+              }}
             >
-              {timer.map((tm) => (
+              {timers.map((tm) => (
                 <option key={tm.name} value={tm.value}>
                   {tm.name}
                 </option>
               ))}
             </select>
           </label>
+          {questions.length > 0 && (
+            <button
+              className="btn btn-soft"
+              onClick={() => {
+                updateShowTimer();
+              }}
+            >
+              {showTimer ? 'Stop Timer' : 'Add Timer'}
+            </button>
+          )}
         </motion.div>
       </motion.div>
     </AnimatePresence>

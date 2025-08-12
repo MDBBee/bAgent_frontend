@@ -4,7 +4,7 @@ import { devtools } from 'zustand/middleware';
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
 export type ProgrammingLanguage = 'python' | 'typescript' | 'javascript';
-export type Timer = 'None' | 5 | 10 | 15;
+// export type Timer = 'None' | 5 | 10 | 15;
 
 type StateQuestion = {
   isLoading: boolean;
@@ -16,7 +16,9 @@ type StateQuestion = {
   //
   error: string | null;
   programmingLanguage: ProgrammingLanguage;
-  timer: Timer;
+  timer: number;
+  progressBarTimerConstant: number;
+  showTimer: boolean;
   finish: boolean;
   confirmSaveQuestions: boolean;
   //
@@ -36,7 +38,9 @@ type StateQuestion = {
   updateChoice: (val: number, questionId: string) => void;
   updateCurQuestionIndex: (val: number) => void;
   updateProgrammingLanguage: (val: ProgrammingLanguage) => void;
-  updateTimer: (val: Timer) => void;
+  updateTimer: (val: number) => void;
+  updateProgressBarTimerConstant: (val: number) => void;
+  updateShowTimer: () => void;
   updateError: () => void;
   updateFinish: () => void;
   updateIsLoading: () => void;
@@ -54,13 +58,26 @@ export const useQuestionStore = create(
       choice: null,
       error: '',
       programmingLanguage: 'python',
-      timer: 'None',
+      timer: 300,
+      progressBarTimerConstant: 300,
+      showTimer: false,
       finish: false,
       confirmSaveQuestions: false,
       updateDifficulty: (diff: Difficulty) => set(() => ({ difficulty: diff })),
       updateProgrammingLanguage: (lang: ProgrammingLanguage) =>
         set(() => ({ programmingLanguage: lang })),
-      updateTimer: (time: Timer) => set(() => ({ timer: time })),
+      updateTimer: (time: number) =>
+        set(() => {
+          if (time <= 0) {
+            return { showTimer: false, finish: true };
+          }
+          return { timer: time };
+        }),
+      updateProgressBarTimerConstant: (time: number) =>
+        set(() => ({ progressBarTimerConstant: time })),
+      updateShowTimer: () => {
+        set((state) => ({ showTimer: !state.showTimer }));
+      },
       updateChoice: (value: number, questionId: string) => {
         set((state) => {
           return {
@@ -85,10 +102,11 @@ export const useQuestionStore = create(
           if (!data)
             throw new Error('Data fetching failed!, from store, line 60');
 
-          set({
+          set((state) => ({
             questions: data.questions,
             isLoading: false,
-          });
+            showTimer: state.progressBarTimerConstant <= 0 ? false : true,
+          }));
         } catch (error: unknown) {
           if (error instanceof TypeError) {
             set({

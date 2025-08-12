@@ -138,7 +138,15 @@ const FinishChallenge = () => {
             to history, guarantees non-repition of generated questions.
           </h2>
           <div className=" flex justify-center items-center md:gap-8 md:flex-nowrap flex-wrap-reverse">
-            <button className="btn btn-neutral">Restart</button>
+            <button
+              className="btn btn-neutral"
+              onClick={() => {
+                resetChallengeRound();
+                updateFinish();
+              }}
+            >
+              Reset
+            </button>
             <button className="btn btn-success" onClick={handleSaveToHistory}>
               {isLoading ? (
                 <h2 className="font-bold flex justify-center items-center">
@@ -149,7 +157,15 @@ const FinishChallenge = () => {
                 'Save to History'
               )}
             </button>
-            <button className="btn btn-neutral">Settings</button>
+            <button
+              className="btn btn-neutral"
+              onClick={() => {
+                updateFinish();
+                navigate('/agentq/settings');
+              }}
+            >
+              Settings
+            </button>
           </div>
         </div>
       </motion.div>

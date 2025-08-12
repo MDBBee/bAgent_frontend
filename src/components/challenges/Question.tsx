@@ -114,9 +114,3 @@ const Question = () => {
   );
 };
 export default Question;
-
-// {correct_answer_id: 1,
-// explanation: 'The `pipe` function applies a series of functions to an initial value from left to right.  `pipe(5, double, square)` is equivalent to `square(double(5))`, which is `square(10)`, resulting in 100.',
-// options: [('50', '100', '25', 'Error')],
-// question_id: '084975bb-fea5-4309-a467-440460966ca4',
-// title: 'With the `pipe` function applying functions sequentially, what is the result of `pipe(5, double, square)` if `double = (x) => x * 2` and `square = (x) => x * x`?'}

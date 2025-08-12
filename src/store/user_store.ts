@@ -148,7 +148,6 @@ export const useUserStore = create(
       }
     },
     signUpUser: async (signUpdata) => {
-      console.log(signUpdata, 'Signup clicked from user_store hook Line80');
       set({ isUserLoading: true });
       try {
         const response = await fetch(URL + '/auth/', {
