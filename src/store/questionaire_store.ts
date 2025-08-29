@@ -31,6 +31,7 @@ type StateQuestion = {
     ) => Promise<{ questions: ChallengeResponse[] } | undefined>
   ) => Promise<void>;
   resetChallengeRound: () => void;
+  endChallengeRound: () => void;
   fetchQuota: (
     queryQuota: () => Promise<QuotaType | undefined>
   ) => Promise<void>;
@@ -67,9 +68,13 @@ export const useQuestionStore = create(
       updateProgrammingLanguage: (lang: ProgrammingLanguage) =>
         set(() => ({ programmingLanguage: lang })),
       updateTimer: (time: number) =>
-        set(() => {
-          if (time <= 0) {
-            return { showTimer: false, finish: true };
+        set((state) => {
+          if (time < 0) {
+            return {
+              showTimer: false,
+              finish: state.questions.length > 0,
+              timer: state.progressBarTimerConstant,
+            };
           }
           return { timer: time };
         }),
@@ -99,13 +104,12 @@ export const useQuestionStore = create(
         try {
           const data: { questions: ChallengeResponse[] } | undefined =
             await queryBackend(endPoint, option);
-          if (!data)
-            throw new Error('Data fetching failed!, from store, line 60');
 
           set((state) => ({
-            questions: data.questions,
+            questions: data?.questions,
             isLoading: false,
             showTimer: state.progressBarTimerConstant <= 0 ? false : true,
+            timer: state.progressBarTimerConstant,
           }));
         } catch (error: unknown) {
           if (error instanceof TypeError) {
@@ -135,18 +139,40 @@ export const useQuestionStore = create(
       },
       updateFinish: () =>
         set((state) => {
-          return { finish: !state.finish };
+          return {
+            finish: !state.finish,
+            showTimer: false,
+            timer: state.progressBarTimerConstant,
+          };
         }),
       updateIsLoading: () =>
         set((state) => ({
           isLoading: !state.isLoading,
         })),
       resetChallengeRound: () =>
-        set({
-          questions: [],
+        set((state) => ({
           curQuestionIndex: 0,
           choice: null,
-        }),
+          questions: state.questions.map((quest) => {
+            return {
+              correct_answer_id: quest.correct_answer_id,
+              explanation: quest.explanation,
+              options: quest.options,
+              question_id: quest.question_id,
+              title: quest.title,
+            } as ChallengeResponse;
+          }),
+          timer: state.progressBarTimerConstant,
+          showTimer: state.progressBarTimerConstant > 0,
+        })),
+      endChallengeRound: () =>
+        set((state) => ({
+          curQuestionIndex: 0,
+          choice: null,
+          questions: [],
+          timer: state.progressBarTimerConstant,
+          showTimer: false,
+        })),
       updateConfirmSaveQuestions: () =>
         set((state) => ({
           confirmSaveQuestions: !state.confirmSaveQuestions,

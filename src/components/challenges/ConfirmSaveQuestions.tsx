@@ -13,8 +13,8 @@ const ConfirmSaveQuestions = () => {
     updateIsLoading,
     programmingLanguage,
     isLoading,
-    resetChallengeRound,
     updateCurQuestionIndex,
+    endChallengeRound,
   } = useQuestionStore();
   const { user } = useUserStore();
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ const ConfirmSaveQuestions = () => {
       );
       toast.success(result.message);
       // Reset the challenges
-      resetChallengeRound();
+      endChallengeRound();
       // - close modal for result history
       updateFinish();
       navigate('/agentQ/settings');

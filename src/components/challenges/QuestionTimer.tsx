@@ -10,12 +10,9 @@ const QuestionTimer = () => {
     curQuestionIndex,
     progressBarTimerConstant,
     updateShowTimer,
-    // updateFinish,
   } = useQuestionStore();
   const minutes = Math.floor(timer / 60);
   const seconds = timer % 60;
-
-  //   if (timer <= 0) updateFinish();
 
   useEffect(() => {
     const timerInterval = setInterval(() => {

@@ -16,6 +16,7 @@ const FinishChallenge = () => {
     programmingLanguage,
     isLoading,
     resetChallengeRound,
+    endChallengeRound,
   } = useQuestionStore();
   const { queryBackend } = useSendRequestToBackend();
   const navigate = useNavigate();
@@ -71,9 +72,11 @@ const FinishChallenge = () => {
         }
       );
       toast.success(result.message);
-      resetChallengeRound();
+      endChallengeRound();
+
       updateFinish();
       navigate('/agentQ/settings');
+      // Added
     } catch (error) {
       console.log(error);
     } finally {
@@ -141,6 +144,8 @@ const FinishChallenge = () => {
             <button
               className="btn btn-neutral"
               onClick={() => {
+                console.log(questions);
+
                 resetChallengeRound();
                 updateFinish();
               }}

@@ -34,6 +34,8 @@ export function useSendRequestToBackend() {
       },
       credentials: 'include',
     });
+    // const req = await request.json();
+    // console.log('HOOK-37', req, request);
 
     if (!request.ok) {
       if (request.status === 429) {
