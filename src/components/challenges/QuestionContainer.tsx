@@ -28,6 +28,7 @@ const QuestionContainer = () => {
               initial="hidden"
               animate="visible"
               exit="hidden"
+              className="overflow-y-scroll"
             >
               {/* Questions component*/}
               <Question />

@@ -44,7 +44,7 @@ const MultiAgent = () => {
   // For properly displaying the ai response on screen
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [chatBotText]);
 
   // For injecting queries from "agentQ-questions" to multiagen
   useEffect(() => {
