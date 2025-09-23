@@ -50,7 +50,7 @@ const QuestionContainer = () => {
               exit={{ x: 30, opacity: 0 }}
             >
               <h2 className="capitalize text-2xl font-bold py-4 mb-4">
-                Welcome To Coding tutor. Agent powered questionaire
+                Welcome To BAgent. Agent powered questionaire
               </h2>
               <p>
                 <span className="text-lg font-bold">Note:</span> Each quiz

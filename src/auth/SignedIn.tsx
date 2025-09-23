@@ -11,7 +11,7 @@ const SignedIn = () => {
   const alphaLogo = user?.email?.split('')[0].toLocaleUpperCase() || 'A';
 
   return (
-    <div className="dropdown dropdown-center">
+    <div className="dropdown dropdown-left">
       <div
         tabIndex={0}
         role="button"
@@ -27,12 +27,30 @@ const SignedIn = () => {
           <h2 className="font-bold">{user?.email?.split('@')[0]}</h2>
           <p className="text-base-content">{user?.email}</p>
         </div>
-        <Link to="/login" className="btn text-sm ">
+        <button></button>
+        <button
+          onClick={() =>
+            toast(
+              'This Feature[User Profile] is currently unavailable- MVP version'
+            )
+          }
+          className="w-full bg-base-200 hover:cursor-pointer hover:bg-base-300 p-3 font-semibold"
+        >
           User Profile
-        </Link>
-        <Link to="/login" className="btn text-sm">
+        </button>
+        <button
+          onClick={() =>
+            toast(
+              'This Feature[Admin Bench] is currently unavailable- MVP version'
+            )
+          }
+          className="w-full bg-base-200 hover:cursor-pointer hover:bg-base-300 p-3 font-semibold"
+        >
           Admin Bench
-        </Link>
+        </button>
+        {/* <Link to="/login" className="btn text-sm">
+          Admin Bench
+        </Link> */}
         <button
           className="btn text-sm"
           onClick={() => {
